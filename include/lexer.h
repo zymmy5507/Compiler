@@ -1,51 +1,57 @@
+
+
 #ifndef LEXER_H
 #define LEXER_H
 
 #include <string>
 #include <vector>
-#include <iostream>
 
-enum class TokenType {
-    INT,
-    IF,
-    IDENTIFIER,
-    NUMBER,
-    ASSIGN,        // =
-    PLUS,          // +
-    MINUS,         // -
-    EQUAL,         // ==
-    LBRACE,        // {
-    RBRACE,        // }
-    LPAREN,        // (
-    RPAREN,        // )
-    SEMICOLON,     // ;
-    UNKNOWN,
-    EOF_TOKEN
+
+enum TokenType {
+    TOK_INT,       
+    TOK_IF,        
+    TOK_ELSE,       
+    TOK_ID,         
+    TOK_NUM,       
+    TOK_ASSIGN,    
+    TOK_PLUS,       
+    TOK_MINUS,      
+    TOK_EQ,        
+    TOK_LBRACE,     
+    TOK_RBRACE,     
+    TOK_LPAREN,    
+    TOK_RPAREN,     
+    TOK_SEMI,     
+    TOK_EOF,        
+    TOK_UNKNOWN     
 };
 
 struct Token {
     TokenType type;
-    std::string text;
+    std::string value;
     
-    Token(TokenType t, const std::string& txt) : type(t), text(txt) {}
+    Token() : type(TOK_UNKNOWN), value("") {}
+    Token(TokenType t, std::string v) : type(t), value(v) {}
 };
+
 
 class Lexer {
 private:
-    size_t pos;
-    std::string code;
-    std::vector<Token> tokens;
+    std::string input;              
+    size_t pos;                     
+    std::vector<Token> tokens;      
     
-    void read_identifier();
-    void read_number();
-    void skip_whitespaces();
-    bool is_end();
+  
+    void skipWhitespace();          
+    void readIdentifier();    
+    void readNumber();              
+    bool isAtEnd();                
     
 public:
-    Lexer(const std::string &content);
-    void tokenize();
-    void print_tokens();
-    std::vector<Token> get_tokens() { return tokens; }
+    Lexer(std::string code);        
+    void tokenize();               
+    void printTokens();             
+    std::vector<Token>& getTokens() { return tokens; }  
 };
 
 #endif
